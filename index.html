@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Universal Navigation</title>
+
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <div>
+        <h1>🌐 Universal Navigation</h1>
+        <p>Smart Campus & Public Building Navigation</p>
+    </div>
+
+    <div class="prototypeBadge">
+        HACKATHON PROTOTYPE
+    </div>
+
+</header>
+
+
+<!-- MAIN CONTROLS -->
+
+<section class="controlSection">
+
+    <button id="routeBtn">
+        📍 Start Navigation
+    </button>
+
+    <button id="collegeBtn">
+        🏫 SR University
+    </button>
+
+    <button id="hospitalBtn">
+        🏥 Hospital
+    </button>
+
+</section>
+
+
+<!-- SEARCH -->
+
+<section class="searchSection">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="🔎 Search Block, Lab, Department, Canteen..."
+    >
+
+    <button id="searchBtn">
+        Search
+    </button>
+
+</section>
+
+
+<!-- QUICK DESTINATIONS -->
+
+<section class="quickSection">
+
+    <h2>Quick Campus Search</h2>
+
+    <div class="quickButtons">
+
+        <button onclick="quickSearch('Admission')">
+            📝 Admission
+        </button>
+
+        <button onclick="quickSearch('Canteen')">
+            🍽️ Canteen
+        </button>
+
+        <button onclick="quickSearch('CSE')">
+            💻 CSE
+        </button>
+
+        <button onclick="quickSearch('Python Lab')">
+            🐍 Python Lab
+        </button>
+
+        <button onclick="quickSearch('Physics Lab')">
+            ⚛️ Physics Lab
+        </button>
+
+        <button onclick="quickSearch('HOD')">
+            👨‍🏫 HOD Office
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- INFORMATION -->
+
+<section id="infoPanel">
+
+    <div class="infoCard">
+        <span>📏 Distance</span>
+        <strong id="distance">--</strong>
+    </div>
+
+    <div class="infoCard">
+        <span>⏱️ Walking Time</span>
+        <strong id="time">--</strong>
+    </div>
+
+    <div class="infoCard">
+        <span>📍 Status</span>
+        <strong id="status">Ready</strong>
+    </div>
+
+</section>
+
+
+<!-- SEARCH RESULT -->
+
+<section id="resultPanel">
+
+    <h2>📍 Destination Information</h2>
+
+    <div id="resultContent">
+        Search for a campus location.
+    </div>
+
+</section>
+
+
+<!-- INDOOR NAVIGATION -->
+
+<section id="indoorNavigation">
+
+    <div class="indoorHeader">
+
+        <div>
+            <h2>🏢 Indoor Navigation</h2>
+            <p>
+                Navigate inside campus buildings, floors and labs
+            </p>
+        </div>
+
+        <span class="indoorBadge">
+            PROTOTYPE
+        </span>
+
+    </div>
+
+
+    <div class="indoorSelectors">
+
+        <div class="indoorField">
+
+            <label for="indoorStart">
+                📍 Starting Location
+            </label>
+
+            <select id="indoorStart">
+
+                <option value="block8-ground">
+                    Block 8 • Ground Floor
+                </option>
+
+                <option value="block8-first">
+                    Block 8 • 1st Floor
+                </option>
+
+                <option value="block8-second">
+                    Block 8 • 2nd Floor
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="indoorField">
+
+            <label for="indoorDestination">
+                🎯 Destination
+            </label>
+
+            <select id="indoorDestination">
+
+                <option value="python-second">
+                    Python Lab • 2nd Floor
+                </option>
+
+                <option value="lecture-first">
+                    Lecture Hall • 1st Floor
+                </option>
+
+                <option value="python-ground">
+                    Python Lab • Ground Floor
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <button id="indoorStartBtn">
+        🧭 Start Indoor Navigation
+    </button>
+
+
+    <div id="indoorProgress">
+
+        <div class="progressTop">
+
+            <span>
+                Navigation Progress
+            </span>
+
+            <strong id="indoorProgressText">
+                Ready
+            </strong>
+
+        </div>
+
+        <div class="progressBar">
+
+            <div id="indoorProgressFill"></div>
+
+        </div>
+
+    </div>
+
+
+    <div id="indoorRoute">
+
+        <div class="indoorEmpty">
+
+            🏢 Select your starting point and destination.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- TURN BY TURN -->
+
+<section id="directionsPanel">
+
+    <h2>🧭 Navigation Steps</h2>
+
+    <div class="directionStep">
+
+        <span>1</span>
+
+        <div>
+            <b>Start</b>
+            <p>Your current location</p>
+        </div>
+
+    </div>
+
+    <div class="directionStep">
+
+        <span>2</span>
+
+        <div>
+            <b>Follow the mapped route</b>
+            <p>Walk along the highlighted route</p>
+        </div>
+
+    </div>
+
+    <div class="directionStep">
+
+        <span>3</span>
+
+        <div>
+            <b>Reach destination building</b>
+            <p>Use indoor navigation for floor-level guidance</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- MAP -->
+
+<div id="map"></div>
+
+
+<!-- ARRIVAL -->
+
+<div id="arrived">
+
+    🟢 You have arrived at your destination!
+
+</div>
+
+
+<footer>
+
+    <p>
+        Universal Navigation • Campus Navigation Prototype
+    </p>
+
+    <p>
+        Indoor information is prototype/student-provided data.
+    </p>
+
+</footer>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
